@@ -30,8 +30,20 @@ bash script/create_versions.sh
 仅生成pkl索引，data_root仍指向原始数据
 
 ```bash
+# 一键生成
+bash script/generate_maptr_pkl.sh
+
+# 或手动
 python tools/generate_maptr_pkl.py --mode low_only
 ```
+
+## 便捷脚本
+
+| 脚本 | 功能 |
+|------|------|
+| `analyze_redundancy.sh` | 一键分析和可视化 |
+| `create_versions.sh` | 一键创建完整版本 |
+| `generate_maptr_pkl.sh` | 一键生成pkl索引 |
 
 ## 核心工具
 

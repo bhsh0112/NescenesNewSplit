@@ -50,7 +50,8 @@ nuscenes_NewSplit/
 │
 ├── script/                         # 便捷脚本
 │   ├── analyze_redundancy.sh      # 一键分析与可视化
-│   └── create_versions.sh         # 一键创建版本
+│   ├── create_versions.sh         # 一键创建版本
+│   └── generate_maptr_pkl.sh      # 一键生成pkl索引
 │
 ├── examples/                       # 使用示例
 │   ├── usage_example.py           # 基础示例
@@ -176,7 +177,10 @@ python tools/create_data.py nuscenes \
 ### 方法2：使用索引文件
 
 ```bash
-# 生成索引
+# 方式A：一键生成（推荐）
+bash script/generate_maptr_pkl.sh
+
+# 方式B：命令行
 python tools/generate_maptr_pkl.py --mode low_only
 
 # MapTR配置：
