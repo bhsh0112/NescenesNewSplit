@@ -89,7 +89,7 @@ def plot_redundancy_distribution(split_result: dict, output_dir: str):
         velocities = [s['avg_velocity'] for s in split_result[key]]
         velocities_by_category.append(velocities)
     
-    bp = ax3.boxplot(velocities_by_category, labels=categories, patch_artist=True)
+    bp = ax3.boxplot(velocities_by_category, tick_labels=categories, patch_artist=True)
     for patch, color in zip(bp['boxes'], colors):
         patch.set_facecolor(color)
         patch.set_alpha(0.7)
@@ -105,7 +105,7 @@ def plot_redundancy_distribution(split_result: dict, output_dir: str):
         redundancies = [s['avg_redundancy'] for s in split_result[key]]
         redundancies_by_category.append(redundancies)
     
-    bp = ax4.boxplot(redundancies_by_category, labels=categories, patch_artist=True)
+    bp = ax4.boxplot(redundancies_by_category, tick_labels=categories, patch_artist=True)
     for patch, color in zip(bp['boxes'], colors):
         patch.set_facecolor(color)
         patch.set_alpha(0.7)
