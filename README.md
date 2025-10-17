@@ -21,6 +21,10 @@ pip install -r requirements.txt
 ### 2. 分析冗余度
 
 ```bash
+# 方式1：一键分析和可视化（推荐）
+bash script/analyze_redundancy.sh
+
+# 方式2：手动运行
 python tools/split_by_redundancy.py \
     --dataroot ./data/nuscenes \
     --version v1.0-trainval
@@ -31,12 +35,6 @@ python tools/split_by_redundancy.py \
 ```bash
 # 一键创建高/低冗余度完整版本
 bash script/create_versions.sh
-```
-
-### 4. 可视化（可选）
-
-```bash
-python tools/visualize_redundancy.py
 ```
 
 ## 📁 项目结构
@@ -51,7 +49,8 @@ nuscenes_NewSplit/
 │   └── redundancy_utils.py        # 工具库
 │
 ├── script/                         # 便捷脚本
-│   └── create_versions.sh         # 一键创建脚本
+│   ├── analyze_redundancy.sh      # 一键分析与可视化
+│   └── create_versions.sh         # 一键创建版本
 │
 ├── examples/                       # 使用示例
 │   ├── usage_example.py           # 基础示例
@@ -322,13 +321,10 @@ pip install -r requirements.txt
 完整的使用流程：
 
 ```bash
-# 1. 分析冗余度
-python tools/split_by_redundancy.py
+# 1. 分析冗余度和可视化（一键）
+bash script/analyze_redundancy.sh
 
-# 2. 可视化结果（可选）
-python tools/visualize_redundancy.py
-
-# 3. 创建完整版本
+# 2. 创建完整版本
 bash script/create_versions.sh
 
 # 4. 在MapTR中使用
