@@ -138,5 +138,5 @@ fi
 echo "下一步："
 echo "  1. 查看可视化图表了解数据分布"
 echo "  2. 运行 'bash script/create_versions.sh' 创建新版本"
-echo "  3. 或运行 'python tools/maptr_adapter.py' 生成MapTR索引"
+echo "  3. 或运行 'python tools/generate_maptr_pkl.py' 生成MapTR pkl索引"
 echo ""

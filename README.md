@@ -44,8 +44,8 @@ nuscenes_NewSplit/
 ├── tools/                          # 核心工具
 │   ├── split_by_redundancy.py     # 冗余度分析主程序
 │   ├── create_nuscenes_version.py # 创建完整版本
+│   ├── generate_maptr_pkl.py      # 生成MapTR pkl索引
 │   ├── visualize_redundancy.py    # 可视化工具
-│   ├── maptr_adapter.py           # MapTR适配器
 │   └── redundancy_utils.py        # 工具库
 │
 ├── script/                         # 便捷脚本
@@ -137,12 +137,12 @@ python tools/visualize_redundancy.py \
 - 散点图
 - 饼图
 
-### maptr_adapter.py - MapTR适配器
+### generate_maptr_pkl.py - 生成MapTR pkl索引
 
-生成MapTR训练所需的pkl索引文件。
+生成MapTR训练所需的pkl索引文件（仅索引，不含完整版本）。
 
 ```bash
-python tools/maptr_adapter.py \
+python tools/generate_maptr_pkl.py \
     --mode low_only \
     --output-dir ./maptr_low_redundancy
 ```
@@ -177,7 +177,7 @@ python tools/create_data.py nuscenes \
 
 ```bash
 # 生成索引
-python tools/maptr_adapter.py --mode low_only
+python tools/generate_maptr_pkl.py --mode low_only
 
 # MapTR配置：
 # data_root = 'data/nuscenes/'

@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-MapTR适配器使用示例
-演示如何生成不同配置的MapTR数据
+MapTR pkl生成器使用示例
+演示如何生成不同配置的MapTR pkl索引数据
 """
 
 import os
-from maptr_adapter import MapTRAdapter
+import sys
+sys.path.append('..')
+from tools.generate_maptr_pkl import MapTRPklGenerator
 
 
 def example1_low_redundancy_only():
@@ -36,10 +38,10 @@ def example1_low_redundancy_only():
         return
     
     # 创建适配器
-    adapter = MapTRAdapter(redundancy_split)
+    generator = MapTRPklGenerator(redundancy_split)
     
     # 生成低冗余度数据
-    result = adapter.create_low_redundancy_split(
+    result = generator.create_low_redundancy_split(
         original_train_path=original_train,
         original_val_path=original_val,
         output_dir=output_dir,
@@ -74,10 +76,10 @@ def example2_mixed_redundancy():
         print("错误: 找不到原始MapTR数据文件")
         return
     
-    adapter = MapTRAdapter(redundancy_split)
+    generator = MapTRPklGenerator(redundancy_split)
     
     # 生成混合数据：70%低冗余 + 30%中冗余
-    result = adapter.create_custom_split(
+    result = generator.create_custom_split(
         original_train_path=original_train,
         original_val_path=original_val,
         output_dir=output_dir,
@@ -115,10 +117,10 @@ def example3_balanced_split():
         print("错误: 找不到原始MapTR数据文件")
         return
     
-    adapter = MapTRAdapter(redundancy_split)
+    generator = MapTRPklGenerator(redundancy_split)
     
     # 生成平衡数据
-    result = adapter.create_balanced_redundancy_split(
+    result = generator.create_balanced_redundancy_split(
         original_train_path=original_train,
         original_val_path=original_val,
         output_dir=output_dir
@@ -151,10 +153,10 @@ def example4_low_and_medium():
         print("错误: 找不到原始MapTR数据文件")
         return
     
-    adapter = MapTRAdapter(redundancy_split)
+    generator = MapTRPklGenerator(redundancy_split)
     
     # 包含低冗余度和中冗余度的所有样本
-    result = adapter.create_low_redundancy_split(
+    result = generator.create_low_redundancy_split(
         original_train_path=original_train,
         original_val_path=original_val,
         output_dir=output_dir,
@@ -189,10 +191,10 @@ def example5_custom_ratio():
         print("错误: 找不到原始MapTR数据文件")
         return
     
-    adapter = MapTRAdapter(redundancy_split)
+    generator = MapTRPklGenerator(redundancy_split)
     
     # 自定义比例
-    result = adapter.create_custom_split(
+    result = generator.create_custom_split(
         original_train_path=original_train,
         original_val_path=original_val,
         output_dir=output_dir,

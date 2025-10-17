@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-MapTR适配器：将冗余度划分结果转换为MapTR可用的数据格式
+MapTR pkl索引生成器
+根据冗余度划分结果生成MapTR训练所需的pkl索引文件
 """
 
 import pickle
@@ -12,9 +13,10 @@ import numpy as np
 from redundancy_utils import RedundancySplitLoader
 
 
-class MapTRAdapter:
+class MapTRPklGenerator:
     """
-    将冗余度划分结果适配到MapTR的数据格式
+    MapTR pkl索引生成器
+    根据冗余度划分结果生成MapTR训练用的pkl索引文件
     """
     
     def __init__(self, redundancy_split_path: str, 
@@ -394,7 +396,7 @@ def main():
     args = parser.parse_args()
     
     print("=" * 80)
-    print("MapTR数据适配器")
+    print("MapTR pkl索引生成器")
     print("=" * 80)
     
     # 检查文件是否存在
@@ -413,19 +415,19 @@ def main():
         print("请确保MapTR数据已准备好")
         return
     
-    # 创建适配器
-    adapter = MapTRAdapter(args.redundancy_split)
+    # 创建生成器
+    generator = MapTRPklGenerator(args.redundancy_split)
     
     # 根据模式执行
     if args.mode == 'low_only':
-        result = adapter.create_low_redundancy_split(
+        result = generator.create_low_redundancy_split(
             args.original_train,
             args.original_val,
             args.output_dir,
             include_categories=['low_redundancy']
         )
     elif args.mode == 'custom':
-        result = adapter.create_custom_split(
+        result = generator.create_custom_split(
             args.original_train,
             args.original_val,
             args.output_dir,
@@ -434,7 +436,7 @@ def main():
             high_ratio=args.high_ratio
         )
     elif args.mode == 'balanced':
-        result = adapter.create_balanced_redundancy_split(
+        result = generator.create_balanced_redundancy_split(
             args.original_train,
             args.original_val,
             args.output_dir
