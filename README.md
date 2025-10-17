@@ -211,12 +211,34 @@ for scene in high_redundancy_scenes:
 
 ## MapTR集成
 
-本工具提供了与MapTR的无缝集成，可以直接生成MapTR训练所需的数据格式。
+本工具提供了两种与MapTR集成的方式：
 
-### 快速开始
+### 方式1：生成完整的NuScenes版本（推荐）⭐
+
+创建完整的v1.0-xxx版本，包含所有元数据，可直接作为data_root使用：
 
 ```bash
-# 1. 生成MapTR低冗余度数据（推荐）
+# 创建高冗余度和低冗余度两个版本
+./create_versions.sh
+
+# 或使用Python脚本
+python create_nuscenes_version.py --create-both
+```
+
+**优点**：
+- ✅ 完整的NuScenes标准结构
+- ✅ 可以直接作为data_root使用
+- ✅ 便于管理和迁移
+- ✅ 使用符号链接，几乎不占额外空间
+
+详见：[CREATE_FULL_VERSION.md](CREATE_FULL_VERSION.md)
+
+### 方式2：仅生成索引文件（快速）
+
+只生成pkl索引文件，data_root仍指向原始数据：
+
+```bash
+# 生成MapTR低冗余度索引
 ./generate_maptr_data.sh
 
 # 或手动运行
@@ -224,6 +246,8 @@ python maptr_adapter.py \
     --mode low_only \
     --output-dir ./maptr_low_redundancy
 ```
+
+详见：[HOW_TO_USE_WITH_MAPTR.md](HOW_TO_USE_WITH_MAPTR.md)
 
 ### 在MapTR中使用
 

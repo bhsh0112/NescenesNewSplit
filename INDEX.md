@@ -19,7 +19,9 @@
 | 文档 | 内容 | 适合人群 |
 |------|------|---------|
 | [README.md](README.md) | 完整功能文档 | 所有用户 |
+| **[CREATE_FULL_VERSION.md](CREATE_FULL_VERSION.md)** | **创建完整版本指南⭐** | MapTR用户 |
 | [MAPTR_INTEGRATION.md](MAPTR_INTEGRATION.md) | MapTR集成详细指南 | MapTR用户 |
+| [HOW_TO_USE_WITH_MAPTR.md](HOW_TO_USE_WITH_MAPTR.md) | MapTR使用说明 | MapTR用户 |
 | [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) | 项目结构和原理 | 开发者 |
 
 ### 🎯 按需求查找
@@ -54,9 +56,11 @@
 
 | 脚本 | 功能 | 用途 |
 |------|------|------|
-| **[maptr_adapter.py](maptr_adapter.py)** | **MapTR适配器** | 生成MapTR数据格式 |
+| **[create_nuscenes_version.py](create_nuscenes_version.py)** | **创建完整版本⭐** | 生成完整的v1.0-xxx版本 |
+| **[create_versions.sh](create_versions.sh)** | **一键创建版本** | 快速创建高/低冗余度版本 |
+| [maptr_adapter.py](maptr_adapter.py) | MapTR适配器 | 生成MapTR索引文件 |
 | [maptr_example.py](maptr_example.py) | MapTR示例 | MapTR使用示例 |
-| [generate_maptr_data.sh](generate_maptr_data.sh) | 一键生成 | 快速生成MapTR数据 |
+| [generate_maptr_data.sh](generate_maptr_data.sh) | 一键生成索引 | 快速生成MapTR索引 |
 
 ### 便捷脚本
 
