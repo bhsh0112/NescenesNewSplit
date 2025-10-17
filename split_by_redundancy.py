@@ -33,10 +33,24 @@ class NuScenesRedundancySplitter:
         
         # 加载数据
         print(f"加载NuScenes数据集: {self.version_path}")
+        
+        # 检查路径是否存在
+        if not os.path.exists(self.version_path):
+            raise FileNotFoundError(f"数据集路径不存在: {self.version_path}")
+        
         self.sample = self._load_json('sample.json')
         self.scene = self._load_json('scene.json')
         self.sample_data = self._load_json('sample_data.json')
         self.ego_pose = self._load_json('ego_pose.json')
+        
+        print(f"已加载: {len(self.sample)} samples, {len(self.scene)} scenes")
+        
+        # 验证数据结构
+        if self.sample and len(self.sample) > 0:
+            first_sample = self.sample[0]
+            print(f"Sample结构检查 - 键: {list(first_sample.keys())}")
+            # 注意: 某些NuScenes格式的sample没有'data'字段，
+            # 而是通过sample_data中的sample_token来关联
         
         # 创建索引
         self.sample_dict = {s['token']: s for s in self.sample}
@@ -44,11 +58,35 @@ class NuScenesRedundancySplitter:
         self.ego_pose_dict = {e['token']: e for e in self.ego_pose}
         self.sample_data_dict = {sd['token']: sd for sd in self.sample_data}
         
+        # 创建sample_token到sample_data的索引（用于快速查找）
+        self.sample_to_data = {}
+        for sd in self.sample_data:
+            sample_token = sd.get('sample_token')
+            if sample_token:
+                if sample_token not in self.sample_to_data:
+                    self.sample_to_data[sample_token] = []
+                self.sample_to_data[sample_token].append(sd)
+        
+        print(f"索引创建完成: sample_dict有 {len(self.sample_dict)} 条记录")
+        print(f"               sample_to_data索引有 {len(self.sample_to_data)} 条记录")
+        
     def _load_json(self, filename: str) -> List[Dict]:
         """加载JSON文件"""
         filepath = os.path.join(self.version_path, filename)
-        with open(filepath, 'r') as f:
-            return json.load(f)
+        
+        if not os.path.exists(filepath):
+            raise FileNotFoundError(f"文件不存在: {filepath}")
+        
+        print(f"  加载 {filename}...", end=' ')
+        try:
+            with open(filepath, 'r') as f:
+                data = json.load(f)
+            print(f"完成 ({len(data)} 条记录)")
+            return data
+        except json.JSONDecodeError as e:
+            raise ValueError(f"JSON解析失败 {filepath}: {e}")
+        except Exception as e:
+            raise RuntimeError(f"读取文件失败 {filepath}: {e}")
     
     def get_ego_pose_for_sample(self, sample_token: str) -> Dict:
         """
@@ -60,11 +98,35 @@ class NuScenesRedundancySplitter:
         Returns:
             ego_pose字典，包含translation和rotation
         """
-        sample = self.sample_dict[sample_token]
-        # 使用LIDAR_TOP的sample_data获取ego_pose
-        lidar_token = sample['data']['LIDAR_TOP']
-        sample_data = self.sample_data_dict[lidar_token]
-        ego_pose_token = sample_data['ego_pose_token']
+        if sample_token not in self.sample_dict:
+            raise KeyError(f"Sample token {sample_token} not found in sample_dict")
+        
+        # 从sample_to_data索引中获取该sample的所有sample_data
+        if sample_token not in self.sample_to_data:
+            raise KeyError(f"Sample token {sample_token} 没有关联的sample_data")
+        
+        sample_data_list = self.sample_to_data[sample_token]
+        
+        # 查找LIDAR_TOP的sample_data（通过filename判断）
+        lidar_data = None
+        for sd in sample_data_list:
+            filename = sd.get('filename', '')
+            if 'LIDAR_TOP' in filename.upper():
+                lidar_data = sd
+                break
+        
+        if lidar_data is None:
+            # 如果找不到LIDAR_TOP，使用第一个sample_data（通常也包含ego_pose_token）
+            lidar_data = sample_data_list[0]
+        
+        # 获取ego_pose_token
+        ego_pose_token = lidar_data.get('ego_pose_token')
+        if not ego_pose_token:
+            raise KeyError(f"Sample_data缺少ego_pose_token")
+        
+        if ego_pose_token not in self.ego_pose_dict:
+            raise KeyError(f"Ego pose token {ego_pose_token} not found in ego_pose_dict")
+        
         return self.ego_pose_dict[ego_pose_token]
     
     def calculate_velocity(self, sample1_token: str, sample2_token: str) -> float:

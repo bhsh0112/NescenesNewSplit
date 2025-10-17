@@ -1,0 +1,51 @@
+nohup: ignoring input
+================================================================================
+NuScenes数据集冗余度分析与划分
+================================================================================
+加载NuScenes数据集: ./data/nuscenes/v1.0-trainval
+  加载 sample.json... 完成 (34149 条记录)
+  加载 scene.json... 完成 (850 条记录)
+  加载 sample_data.json... 完成 (2631083 条记录)
+  加载 ego_pose.json... 完成 (2631083 条记录)
+已加载: 34149 samples, 850 scenes
+Sample结构检查 - 键: ['token', 'timestamp', 'prev', 'next', 'scene_token']
+索引创建完成: sample_dict有 34149 条记录
+               sample_to_data索引有 34149 条记录
+
+开始分析所有scenes的冗余度...
+低速阈值: 1.0 m/s
+高速阈值: 5.0 m/s
+已分析 50/850 个scenes
+已分析 100/850 个scenes
+已分析 150/850 个scenes
+已分析 200/850 个scenes
+已分析 250/850 个scenes
+已分析 300/850 个scenes
+已分析 350/850 个scenes
+已分析 400/850 个scenes
+已分析 450/850 个scenes
+已分析 500/850 个scenes
+已分析 550/850 个scenes
+已分析 600/850 个scenes
+已分析 650/850 个scenes
+已分析 700/850 个scenes
+已分析 750/850 个scenes
+已分析 800/850 个scenes
+已分析 850/850 个scenes
+完成！共分析 850 个scenes
+
+数据划分结果:
+  高冗余度 (≥0.6): 220 scenes, 8845 samples
+  中冗余度 (0.3-0.6): 176 scenes, 7074 samples
+  低冗余度 (≤0.3): 454 scenes, 18230 samples
+
+已保存pickle格式: ./redundancy_split/redundancy_split.pkl
+已保存JSON格式: ./redundancy_split/redundancy_split.json
+已保存sample tokens: ./redundancy_split/high_redundancy_sample_tokens.txt (8845 samples)
+已保存sample tokens: ./redundancy_split/medium_redundancy_sample_tokens.txt (7074 samples)
+已保存sample tokens: ./redundancy_split/low_redundancy_sample_tokens.txt (18230 samples)
+已生成统计报告: ./redundancy_split/redundancy_report.txt
+
+================================================================================
+划分完成！
+================================================================================
